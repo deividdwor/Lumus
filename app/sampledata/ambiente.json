@@ -1,0 +1,45 @@
+{
+  "ambientes":[
+    {
+      "color": "@android:color/holo_green_dark",
+      "nome": "Quarto Principal",
+      "icone": "@drawable/bed_empty"
+    },
+    {
+      "color": "@android:color/holo_orange_light",
+      "nome": "Cozinha",
+      "icone": "@drawable/fridge"
+    },
+    {
+      "color": "@android:color/holo_blue_dark",
+      "nome": "Sala de Estar",
+      "icone": "@drawable/sofa"
+    },
+    {
+      "color": "@android:color/holo_orange_dark",
+      "nome": "Banheiro",
+      "icone": "@drawable/toilet"
+    },
+    {
+      "color": "@android:color/holo_red_dark",
+      "nome": "Sala de Jantar",
+      "icone": "@drawable/glass_wine"
+    },
+    {
+      "color": "@android:color/holo_purple",
+      "nome": "Garagem",
+      "icone": "@drawable/car"
+    },
+    {
+      "color": "@android:color/holo_blue_bright",
+      "nome": "Area de Serviço",
+      "icone": "@drawable/washing_machine"
+    },
+    {
+      "color": "@android:color/holo_green_light",
+      "nome": "Escritorio",
+      "icone": "@drawable/laptop_chromebook"
+    }
+
+  ]
+}

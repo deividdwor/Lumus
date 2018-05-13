@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/item_ambiente_card"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:src="@sample/ambiente.json/ambientes/color"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        />
+
+    <TextView
+        android:id="@+id/item_ambiente_nome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:padding="8dp"
+        tools:text="@sample/ambiente.json/ambientes/nome"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/item_ambiente_card"
+        app:layout_constraintEnd_toEndOf="@id/item_ambiente_card"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/item_ambiente_card"
+        app:layout_constraintTop_toTopOf="@id/item_ambiente_card" />
+
+    <ImageView
+        android:id="@+id/item_ambiente_icone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:src="@sample/ambiente.json/ambientes/icone"
+        app:layout_constraintStart_toStartOf="@id/item_ambiente_card"
+        app:layout_constraintEnd_toEndOf="@id/item_ambiente_card"
+        app:layout_constraintTop_toTopOf="@id/item_ambiente_card"
+        app:layout_constraintBottom_toBottomOf="@id/item_ambiente_card"
+        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_marginEnd="20dp"/>
+</android.support.constraint.ConstraintLayout>
