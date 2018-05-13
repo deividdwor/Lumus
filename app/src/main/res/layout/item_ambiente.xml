@@ -26,7 +26,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:padding="8dp"
-        tools:text="@sample/ambiente.json/ambientes/nome"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -34,7 +33,8 @@
         app:layout_constraintEnd_toEndOf="@id/item_ambiente_card"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/item_ambiente_card"
-        app:layout_constraintTop_toTopOf="@id/item_ambiente_card" />
+        app:layout_constraintTop_toTopOf="@id/item_ambiente_card"
+        tools:text="@sample/ambiente.json/ambientes/nome" />
 
     <ImageView
         android:id="@+id/item_ambiente_icone"
@@ -47,4 +47,5 @@
         app:layout_constraintBottom_toBottomOf="@id/item_ambiente_card"
         app:layout_constraintHorizontal_bias="1.0"
         android:layout_marginEnd="20dp"/>
+
 </android.support.constraint.ConstraintLayout>
