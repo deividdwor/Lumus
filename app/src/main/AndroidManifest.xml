@@ -16,7 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.DetalhesAmbienteActivity"></activity>
+        <activity android:name=".ui.activity.DetalhesAmbienteActivity" />
+        <activity
+            android:name=".ui.activity.MenuActivity"
+            android:label="@string/title_activity_menu"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.activity.NovoAmbienteActivity"></activity>
     </application>
 
 </manifest>

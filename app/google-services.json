@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "490159636951",
+    "firebase_url": "https://lumus-f1e74.firebaseio.com",
+    "project_id": "lumus-f1e74",
+    "storage_bucket": "lumus-f1e74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490159636951:android:0e729000657f0ab0",
+        "android_client_info": {
+          "package_name": "com.lumossmart.lumossmarthome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "490159636951-8dtmbofnbtvlbnhqliu3mog3gg81em3l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lumossmart.lumossmarthome",
+            "certificate_hash": "185097d4fb4e6a7fc128f02d225dca2a75379d50"
+          }
+        },
+        {
+          "client_id": "490159636951-quhml4ahca172grchn022pt7sbdpgn35.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsEHss9lOvnxIBiqZHFqteEpc7-2gvdoQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "490159636951-quhml4ahca172grchn022pt7sbdpgn35.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
