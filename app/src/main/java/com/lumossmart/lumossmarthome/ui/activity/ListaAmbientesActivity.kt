@@ -6,6 +6,10 @@ import com.lumossmart.lumossmarthome.R
 import com.lumossmart.lumossmarthome.model.Ambiente
 import com.lumossmart.lumossmarthome.ui.adapter.ListaAmbientesAdapter
 import kotlinx.android.synthetic.main.activity_lista_ambientes.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+
+
 
 class ListaAmbientesActivity : AppCompatActivity() {
 
@@ -32,5 +36,12 @@ class ListaAmbientesActivity : AppCompatActivity() {
                 Ambiente( "@android:color/holo_green_light","Escritorio 2","@drawable/laptop_chromebook"))
 
         lista_ambientes_listview.adapter = ListaAmbientesAdapter(ambientes, this)
+
+        lista_ambientes_listview.setOnItemClickListener { parent, view, position, id ->
+            val database = FirebaseDatabase.getInstance()
+            val myRef = database.getReference("ambiente")
+            myRef.setValue(position)
+
+        }
     }
 }
