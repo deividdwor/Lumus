@@ -2,12 +2,11 @@ package com.lumossmart.lumossmarthome.ui.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.google.firebase.database.FirebaseDatabase
 import com.lumossmart.lumossmarthome.R
 import com.lumossmart.lumossmarthome.model.Ambiente
 import com.lumossmart.lumossmarthome.ui.adapter.ListaAmbientesAdapter
 import kotlinx.android.synthetic.main.activity_lista_ambientes.*
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 
 
 
