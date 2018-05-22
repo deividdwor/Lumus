@@ -1,97 +1,150 @@
 package com.lumossmart.lumossmarthome.ui.activity
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.annotation.TargetApi
-import android.content.pm.PackageManager
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-import android.app.LoaderManager.LoaderCallbacks
-import android.content.CursorLoader
-import android.content.Loader
-import android.database.Cursor
-import android.net.Uri
-import android.os.AsyncTask
-import android.os.Build
-import android.os.Bundle
-import android.provider.ContactsContract
-import android.text.TextUtils
-import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.ArrayAdapter
-import android.widget.TextView
 
-import java.util.ArrayList
-import android.Manifest.permission.READ_CONTACTS
-import android.content.Intent
-import android.widget.Button
+import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_google_signin.*
 import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.*
-import com.google.android.gms.common.SignInButton
-import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.ConnectionResult
+import com.google.firebase.auth.FirebaseUser
+import android.content.Intent
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.firebase.auth.GoogleAuthProvider
 import com.lumossmart.lumossmarthome.R
 
-import kotlinx.android.synthetic.main.activity_login.*
+class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
-class LoginActivity : AppCompatActivity(){
+    private val TAG = "JSAGoogleSignIn"
+    private val REQUEST_CODE_SIGN_IN = 1234
 
-    lateinit var gso: GoogleSignInOptions
-    lateinit var mGoogleSignInClient: GoogleSignInClient
-    val RC_SIGN_IN: Int = 1
-    lateinit var signOut: Button
+    private var mAuth: FirebaseAuth? = null
+
+    private var mGoogleApiClient: GoogleApiClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-        val signIn = findViewById<View>(R.id.email_sign_in_button) as Button
-        gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+        setContentView(R.layout.activity_google_signin)
+
+        btn_sign_in.setOnClickListener(this)
+        btn_sign_out.setOnClickListener(this)
+        btn_disconnect.setOnClickListener(this)
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.request_client_id))
                 .requestEmail()
                 .build()
-        signOut = findViewById<View>(R.id.signOutBtn) as Button
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-        signIn.setOnClickListener {
-            view: View? -> signIn()
-        }
+
+        mGoogleApiClient = GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build()
+
+        mAuth = FirebaseAuth.getInstance()
     }
-    private fun signIn () {
-        val signInIntent: Intent = mGoogleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+
+    override fun onStart() {
+        super.onStart()
+
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = mAuth!!.currentUser
+        updateUI(currentUser)
+    }
+
+    override fun onClick(v: View?) {
+        val i = v!!.id
+
+        when (i) {
+            R.id.btn_sign_in -> signIn()
+            R.id.btn_sign_out -> signOut()
+            R.id.btn_disconnect -> revokeAccess()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
-            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleResult (task)
-        }else {
-            Toast.makeText(this, "Problem in execution order :(", Toast.LENGTH_LONG).show()
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent();
+        if (requestCode == REQUEST_CODE_SIGN_IN) {
+            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+            if (result.isSuccess) {
+                // successful -> authenticate with Firebase
+                val account = result.signInAccount
+                firebaseAuthWithGoogle(account!!)
+            } else {
+                // failed -> update UI
+                updateUI(null)
+                Toast.makeText(applicationContext, "SignIn: failed!",
+                        Toast.LENGTH_SHORT).show()
+            }
         }
     }
-    private fun handleResult (completedTask: Task<GoogleSignInAccount>) {
-        try {
-            val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
-            updateUI (account)
-        } catch (e: ApiException) {
-            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
-        }
+
+    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
+        Log.e(TAG, "firebaseAuthWithGoogle():" + acct.id!!)
+
+        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
+        mAuth!!.signInWithCredential(credential)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success
+                        Log.e(TAG, "signInWithCredential: Success!")
+                        val user = mAuth!!.currentUser
+                        updateUI(user)
+                    } else {
+                        // Sign in fails
+                        Log.w(TAG, "signInWithCredential: Failed!", task.exception)
+                        Toast.makeText(applicationContext, "Authentication failed!",
+                                Toast.LENGTH_SHORT).show()
+                        updateUI(null)
+                    }
+                }
     }
-    private fun updateUI (account: GoogleSignInAccount) {
-        val dispTxt = findViewById<View>(R.id.dispTxt) as TextView
-        dispTxt.text = account.displayName
-        signOut.visibility = View.VISIBLE
-        signOut.setOnClickListener {
-            view: View? ->  mGoogleSignInClient.signOut().addOnCompleteListener {
-            task: Task<Void> -> if (task.isSuccessful) {
-            dispTxt.text = " "
-            signOut.visibility = View.INVISIBLE
-            signOut.isClickable = false
-        }
-        }
+
+    override fun onConnectionFailed(connectionResult: ConnectionResult) {
+        Log.e(TAG, "onConnectionFailed():" + connectionResult);
+        Toast.makeText(applicationContext, "Google Play Services error.", Toast.LENGTH_SHORT).show();
+    }
+
+    private fun signIn() {
+        val intent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient)
+        startActivityForResult(intent, REQUEST_CODE_SIGN_IN)
+    }
+
+    private fun signOut() {
+        // sign out Firebase
+        mAuth!!.signOut()
+
+        // sign out Google
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback { updateUI(null) }
+    }
+
+    private fun revokeAccess() {
+        // sign out Firebase
+        mAuth!!.signOut()
+
+        // revoke access Google
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback { updateUI(null) }
+    }
+
+    private fun updateUI(user: FirebaseUser?) {
+        if (user != null) {
+            tvStatus.text = "Google User email: " + user.email!!
+            tvDetail.text = "Firebase User ID: " + user.uid
+
+            btn_sign_in.visibility = View.GONE
+            layout_sign_out_and_disconnect.visibility = View.VISIBLE
+        } else {
+            tvStatus.text = "Signed Out"
+            tvDetail.text = null
+
+            btn_sign_in.visibility = View.VISIBLE
+            layout_sign_out_and_disconnect.visibility = View.GONE
         }
     }
 }
