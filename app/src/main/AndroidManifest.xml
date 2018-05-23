@@ -14,10 +14,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.ListaAmbientesActivity">
-
-        </activity>
-        <activity android:name=".ui.activity.DetalhesAmbienteActivity" />
         <activity
             android:name=".ui.activity.LoginActivity"
             android:label="@string/title_activity_login">
@@ -27,11 +23,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.activity.ListaAmbientesActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ui.activity.DetalhesAmbienteActivity" >
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+        android:name=".ui.activity.MenuActivity"
+        android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".ui.activity.NovoAmbienteActivity" >
+        </activity>
 
-            android:name=".ui.activity.MenuActivity"
-            android:label="@string/title_activity_menu"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activity.NovoAmbienteActivity"></activity>
     </application>
 
 </manifest>

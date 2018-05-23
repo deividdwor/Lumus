@@ -32,8 +32,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient
         setContentView(R.layout.activity_google_signin)
 
         btn_sign_in.setOnClickListener(this)
-        btn_sign_out.setOnClickListener(this)
-        btn_disconnect.setOnClickListener(this)
+        SignOut.setOnClickListener(this)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.request_client_id))
@@ -61,8 +60,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient
 
         when (i) {
             R.id.btn_sign_in -> signIn()
-            R.id.btn_sign_out -> signOut()
-            R.id.btn_disconnect -> revokeAccess()
+            R.id.SignOut -> signOut()
         }
     }
 
@@ -95,6 +93,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient
                         // Sign in success
                         Log.e(TAG, "signInWithCredential: Success!")
                         val user = mAuth!!.currentUser
+                        val intent = Intent(this, MenuActivity::class.java)
+                        startActivity(intent)
                         updateUI(user)
                     } else {
                         // Sign in fails
@@ -116,7 +116,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient
         startActivityForResult(intent, REQUEST_CODE_SIGN_IN)
     }
 
-    private fun signOut() {
+    public fun signOut() {
         // sign out Firebase
         mAuth!!.signOut()
 
@@ -134,17 +134,17 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            tvStatus.text = "Google User email: " + user.email!!
-            tvDetail.text = "Firebase User ID: " + user.uid
+           // tvStatus.text = "Google User email: " + user.email!!
+           // tvDetail.text = "Firebase User ID: " + user.uid
 
             btn_sign_in.visibility = View.GONE
-            layout_sign_out_and_disconnect.visibility = View.VISIBLE
+            //layout_sign_out_and_disconnect.visibility = View.VISIBLE
         } else {
-            tvStatus.text = "Signed Out"
-            tvDetail.text = null
+          //  tvStatus.text = "Signed Out"
+          //  tvDetail.text = null
 
             btn_sign_in.visibility = View.VISIBLE
-            layout_sign_out_and_disconnect.visibility = View.GONE
+           // layout_sign_out_and_disconnect.visibility = View.GONE
         }
     }
 }

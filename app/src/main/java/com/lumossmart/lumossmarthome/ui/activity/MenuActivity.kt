@@ -30,6 +30,11 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+        supportFragmentManager
+                .beginTransaction()
+                .add(R.id.fragment_content, listaAmbientes.newInstance(), "listaAmbientes")
+                .commit()
     }
 
     override fun onBackPressed() {

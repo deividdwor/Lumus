@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Lumos Smart Home</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_lista_ambientes">Lista Ambientes</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -23,4 +24,8 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_teste">teste</string>
 </resources>
