@@ -4,6 +4,7 @@ package com.lumossmart.lumossmarthome.ui.activity
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +12,14 @@ import android.view.ViewGroup
 import com.lumossmart.lumossmarthome.R
 import com.lumossmart.lumossmarthome.model.Ambiente
 import com.lumossmart.lumossmarthome.ui.adapter.ListaAmbientesAdapter
-import kotlinx.android.synthetic.main.activity_lista_ambientes.*
+import kotlinx.android.synthetic.main.fragment_lista_ambientes.*
+import kotlinx.android.synthetic.main.fragment_lista_ambientes.view.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-
+lateinit var contexto : Context
 /**
  * A simple [Fragment] subclass.
  *
@@ -32,6 +34,7 @@ companion object {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+        val view = inflater.inflate(R.layout.fragment_lista_ambientes, container, false)
 
         val ambientes = listOf(
                 Ambiente("@android:color/holo_green_dark", "Quarto Principal","@drawable/bed_empty"),
@@ -50,10 +53,10 @@ companion object {
                 Ambiente("@android:color/holo_purple","Garagem 2","@drawable/car"),
                 Ambiente("@android:color/holo_blue_bright","Area de Serviço 2","@drawable/washing_machine"),
                 Ambiente( "@android:color/holo_green_light","Escritorio 2","@drawable/laptop_chromebook"))
-
-        val ctx = context
-     //   lista_ambientes_listview.adapter = ListaAmbientesAdapter(ambientes, ctx!!)
-        return inflater.inflate(R.layout.fragment_lista_ambientes, container, false)
+        Log.e("bib", view.lista_ambientes_listview.toString())
+        view.lista_ambientes_listview?.adapter = ListaAmbientesAdapter(ambientes, context)
+        return view
     }
+
 
 }
