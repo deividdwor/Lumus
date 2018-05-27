@@ -106,8 +106,11 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_camera -> {
-                // Handle the camera action
+            R.id.ambientes -> {
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_content, listaAmbientes.newInstance(), "listaAmbientes")
+                        .commit()
             }
             R.id.nav_gallery -> {
 
@@ -122,8 +125,8 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.logout -> {
-                val mAuth = FirebaseAuth.getInstance();
-                mAuth.signOut();
+                val mAuth = FirebaseAuth.getInstance()
+                mAuth.signOut()
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback {
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)

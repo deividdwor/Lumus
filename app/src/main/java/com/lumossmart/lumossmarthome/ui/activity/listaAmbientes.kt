@@ -8,12 +8,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 
 import com.lumossmart.lumossmarthome.R
 import com.lumossmart.lumossmarthome.model.Ambiente
 import com.lumossmart.lumossmarthome.ui.adapter.ListaAmbientesAdapter
 import kotlinx.android.synthetic.main.fragment_lista_ambientes.*
 import kotlinx.android.synthetic.main.fragment_lista_ambientes.view.*
+import kotlinx.android.synthetic.main.fragment_novo_ambiente.view.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,6 +58,7 @@ companion object {
                 Ambiente( "@android:color/holo_green_light","Escritorio 2","@drawable/laptop_chromebook"))
         Log.e("bib", view.lista_ambientes_listview.toString())
         view.lista_ambientes_listview?.adapter = ListaAmbientesAdapter(ambientes, context)
+
 
         return view
     }
