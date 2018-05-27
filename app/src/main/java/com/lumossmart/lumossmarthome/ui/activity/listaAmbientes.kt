@@ -19,12 +19,13 @@ import kotlinx.android.synthetic.main.fragment_lista_ambientes.view.*
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-lateinit var contexto : Context
+
 /**
  * A simple [Fragment] subclass.
  *
  */
 class listaAmbientes : Fragment() {
+
 companion object {
     fun newInstance():listaAmbientes {
         return listaAmbientes()
@@ -36,7 +37,7 @@ companion object {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_lista_ambientes, container, false)
 
-        val ambientes = listOf(
+        var ambientes = listOf(
                 Ambiente("@android:color/holo_green_dark", "Quarto Principal","@drawable/bed_empty"),
                 Ambiente("@android:color/holo_orange_light","Cozinha", "@drawable/fridge"),
                 Ambiente("@android:color/holo_blue_dark","Sala de Estar", "@drawable/sofa"),
@@ -55,8 +56,10 @@ companion object {
                 Ambiente( "@android:color/holo_green_light","Escritorio 2","@drawable/laptop_chromebook"))
         Log.e("bib", view.lista_ambientes_listview.toString())
         view.lista_ambientes_listview?.adapter = ListaAmbientesAdapter(ambientes, context)
+
         return view
     }
+
 
 
 }

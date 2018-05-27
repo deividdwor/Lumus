@@ -16,19 +16,13 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.LoginActivity"
-            android:label="@string/title_activity_login">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activity.ListaAmbientesActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".ui.activity.DetalhesAmbienteActivity" >
-            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
         android:name=".ui.activity.MenuActivity"
         android:theme="@style/AppTheme.NoActionBar" >

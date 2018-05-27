@@ -1,6 +1,8 @@
 package com.lumossmart.lumossmarthome.ui.adapter
 
 import android.content.Context
+import android.os.Build
+import android.support.annotation.RequiresApi
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import kotlinx.android.synthetic.main.item_ambiente.view.*
 class ListaAmbientesAdapter(private val ambientes: List<Ambiente>,
                             private val contexto: Context?) : BaseAdapter(){
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
         val viewCriada = LayoutInflater.from(contexto).inflate(R.layout.item_ambiente, parent, false)
 
@@ -20,11 +23,11 @@ class ListaAmbientesAdapter(private val ambientes: List<Ambiente>,
 
         var resources = contexto!!.resources
         val idCor = resources.getIdentifier(ambiente.cor, "drawable", contexto!!.packageName)
-        var drawable = resources.getDrawable(idCor)
+        var drawable = resources.getDrawable(idCor, null)
         viewCriada.item_ambiente_cor.setImageDrawable(drawable)
 
         val idIcone = resources.getIdentifier(ambiente.icone, "drawable", contexto!!.packageName)
-        var drawableIcone = resources.getDrawable(idIcone)
+        var drawableIcone = resources.getDrawable(idIcone, null)
         viewCriada.item_ambiente_icone.setImageDrawable(drawableIcone)
 
 

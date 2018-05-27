@@ -1,35 +1,42 @@
 package com.lumossmart.lumossmarthome.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
 import com.lumossmart.lumossmarthome.R
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_menu.*
 import kotlinx.android.synthetic.main.app_bar_menu.*
-import com.google.firebase.auth.FirebaseUser
-import kotlinx.android.synthetic.main.nav_header_menu.*
 import kotlinx.android.synthetic.main.nav_header_menu.view.*
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import kotlinx.android.synthetic.main.fragment_lista_ambientes.*
 
 
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private var mAuth: FirebaseAuth? = null
-
+    lateinit var mGoogleApiClient: GoogleApiClient
     override fun onCreate(savedInstanceState: Bundle?) {
+
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_content, NovoAmbiente.newInstance(), "NovoAmbientes")
+                    .commit()
         }
 
         val toggle = ActionBarDrawerToggle(
@@ -37,10 +44,39 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
+
         supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_content, listaAmbientes.newInstance(), "listaAmbientes")
+                .replace(R.id.fragment_content, listaAmbientes.newInstance(), "listaAmbientes")
                 .commit()
+
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build()
+        mGoogleApiClient = GoogleApiClient.Builder(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build()
+        mGoogleApiClient.connect()
+        super.onStart()
+
+        val extras = intent.extras
+        if(extras != null){
+            val nome = extras.getString("nome")
+            val email = extras.getString("email")
+            val foto = extras.getString("foto")
+
+            val nav = this.nav_view
+            var headerView = nav.getHeaderView(0)
+            headerView.email_user.text = email
+            headerView.name.text = nome
+            var fotoPerfil = headerView.foto
+
+            Log.e("ettet", foto)
+            Picasso.with(this@MenuActivity)
+                    .load(foto)
+                    .into(fotoPerfil)
+        }
     }
 
     override fun onBackPressed() {
@@ -85,7 +121,13 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_share -> {
 
             }
-            R.id.nav_send -> {
+            R.id.logout -> {
+                val mAuth = FirebaseAuth.getInstance();
+                mAuth.signOut();
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }
 
             }
         }

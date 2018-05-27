@@ -32,7 +32,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient
         setContentView(R.layout.activity_google_signin)
 
         btn_sign_in.setOnClickListener(this)
-        SignOut.setOnClickListener(this)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.request_client_id))
@@ -45,6 +44,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient
                 .build()
 
         mAuth = FirebaseAuth.getInstance()
+
+
     }
 
     override fun onStart() {
@@ -52,7 +53,16 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient
 
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = mAuth!!.currentUser
-        updateUI(currentUser)
+        if(currentUser != null){
+            val intent = Intent(this, MenuActivity::class.java)
+            intent.putExtra("nome", currentUser?.displayName)
+            intent.putExtra("email", currentUser?.email)
+            intent.putExtra("foto", currentUser?.photoUrl.toString())
+
+            startActivity(intent)
+
+        }
+
     }
 
     override fun onClick(v: View?) {
@@ -60,7 +70,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient
 
         when (i) {
             R.id.btn_sign_in -> signIn()
-            R.id.SignOut -> signOut()
         }
     }
 
@@ -94,6 +103,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient
                         Log.e(TAG, "signInWithCredential: Success!")
                         val user = mAuth!!.currentUser
                         val intent = Intent(this, MenuActivity::class.java)
+                        intent.putExtra("nome", acct.displayName)
+                        intent.putExtra("email", acct.email)
+                        intent.putExtra("foto", acct.photoUrl.toString())
+
                         startActivity(intent)
                         updateUI(user)
                     } else {
@@ -138,7 +151,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient
            // tvDetail.text = "Firebase User ID: " + user.uid
 
             btn_sign_in.visibility = View.GONE
-            //layout_sign_out_and_disconnect.visibility = View.VISIBLE
         } else {
           //  tvStatus.text = "Signed Out"
           //  tvDetail.text = null
