@@ -1,6 +1,6 @@
 package com.lumossmart.lumossmarthome.model
 
-enum class IconeEnum (val icone: String){
+enum class IconeDispositivoEnum(val icone: String){
     QUARTO("@drawable/bed_empty"),
     COZINHA("@drawable/fridge"),
     SALA("@drawable/sofa"),

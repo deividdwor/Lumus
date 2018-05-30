@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.lumossmart.lumossmarthome.R
 import com.squareup.picasso.Picasso
@@ -19,24 +20,33 @@ import kotlinx.android.synthetic.main.nav_header_menu.view.*
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_lista_ambientes.*
-
 
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     lateinit var mGoogleApiClient: GoogleApiClient
     override fun onCreate(savedInstanceState: Bundle?) {
 
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fragment_content, NovoAmbiente.newInstance(), "NovoAmbientes")
-                    .commit()
+            val fragment = this.supportFragmentManager.findFragmentByTag("DetalhesAmbiente")
+            if(fragment != null){
+                val key = fragment.arguments!!.getString("key")
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_content, NovoDispositivo.newInstance(key), "NovoDispositivo")
+                        .commit()
+            }else{
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_content, NovoAmbiente.newInstance(), "NovoAmbientes")
+                        .commit()
+            }
+
         }
 
         val toggle = ActionBarDrawerToggle(
@@ -45,11 +55,20 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
 
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_content, listaAmbientes.newInstance(), "listaAmbientes")
-                .commit()
 
+        val fragment = this.supportFragmentManager.findFragmentByTag("NovoDispositivo")
+        if(fragment != null){
+            val key = fragment.arguments!!.getString("key")
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_content, NovoDispositivo.newInstance(key), "DetalhesAmbiente")
+                    .commit()
+        }else{
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_content, listaAmbientes.newInstance(), "listaAmbientes")
+                    .commit()
+        }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -72,7 +91,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             headerView.name.text = nome
             var fotoPerfil = headerView.foto
 
-            Log.e("ettet", foto)
             Picasso.with(this@MenuActivity)
                     .load(foto)
                     .into(fotoPerfil)
@@ -98,7 +116,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
+            R.id.action_settings -> return setings()
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -136,6 +154,22 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+    fun setings():Boolean{
+        val mDatabase = FirebaseDatabase.getInstance().getReference("casa/ambiente")
+        val fragment = this.supportFragmentManager.findFragmentByTag("DetalhesAmbiente")
+        if(fragment != null){
+            val ambiente = mDatabase.child(fragment.arguments!!.getString("key"))
+            ambiente.removeValue()
+
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_content, listaAmbientes.newInstance(), "listaAmbientes")
+                    .commit()
+        }
+
         return true
     }
 }

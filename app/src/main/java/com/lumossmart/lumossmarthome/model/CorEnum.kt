@@ -1,6 +1,6 @@
 package com.lumossmart.lumossmarthome.model
 
-enum class CorEnum(val cor: String) {
+enum class CorEnum(val cor: String){
     VERDE("@android:color/holo_green_dark"),
     LARANJA("@android:color/holo_orange_light"),
     AZUL("@android:color/holo_blue_dark"),

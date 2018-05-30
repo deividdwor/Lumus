@@ -9,23 +9,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 import com.lumossmart.lumossmarthome.R
 import com.lumossmart.lumossmarthome.model.Ambiente
 import com.lumossmart.lumossmarthome.ui.adapter.ListaAmbientesAdapter
-import kotlinx.android.synthetic.main.fragment_lista_ambientes.*
 import kotlinx.android.synthetic.main.fragment_lista_ambientes.view.*
-import kotlinx.android.synthetic.main.fragment_novo_ambiente.view.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private lateinit var ambientes: MutableList<Ambiente>
 
-/**
- * A simple [Fragment] subclass.
- *
- */
 class listaAmbientes : Fragment() {
 
 companion object {
@@ -39,26 +34,32 @@ companion object {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_lista_ambientes, container, false)
 
-        var ambientes = listOf(
-                Ambiente("@android:color/holo_green_dark", "Quarto Principal","@drawable/bed_empty"),
-                Ambiente("@android:color/holo_orange_light","Cozinha", "@drawable/fridge"),
-                Ambiente("@android:color/holo_blue_dark","Sala de Estar", "@drawable/sofa"),
-                Ambiente("@android:color/holo_orange_dark","Banheiro","@drawable/toilet"),
-                Ambiente( "@android:color/holo_red_dark","Sala de Jantar","@drawable/glass_wine"),
-                Ambiente("@android:color/holo_purple","Garagem","@drawable/car"),
-                Ambiente("@android:color/holo_blue_bright","Area de Serviço","@drawable/washing_machine"),
-                Ambiente( "@android:color/holo_green_light","Escritorio","@drawable/laptop_chromebook"),
-                Ambiente("@android:color/holo_green_dark", "Quarto Crianças","@drawable/bed_empty"),
-                Ambiente("@android:color/holo_orange_light","Cozinha 2", "@drawable/fridge"),
-                Ambiente("@android:color/holo_blue_dark","Sala de Estar 2", "@drawable/sofa"),
-                Ambiente("@android:color/holo_orange_dark","Banheiro 2","@drawable/toilet"),
-                Ambiente( "@android:color/holo_red_dark","Sala de Jantar 2","@drawable/glass_wine"),
-                Ambiente("@android:color/holo_purple","Garagem 2","@drawable/car"),
-                Ambiente("@android:color/holo_blue_bright","Area de Serviço 2","@drawable/washing_machine"),
-                Ambiente( "@android:color/holo_green_light","Escritorio 2","@drawable/laptop_chromebook"))
-        Log.e("bib", view.lista_ambientes_listview.toString())
-        view.lista_ambientes_listview?.adapter = ListaAmbientesAdapter(ambientes, context)
+        val mDatabase = FirebaseDatabase.getInstance().getReference("casa/ambiente")
 
+        mDatabase.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {  }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                ambientes = mutableListOf()
+                if(p0!!.exists()){
+                    for(a in p0.children){
+                        var ambiente = a.getValue(Ambiente::class.java)
+                        ambiente!!.id = a.key
+                        ambientes.add(ambiente!!)
+                    }
+                }
+                view.lista_ambientes_listview?.adapter = ListaAmbientesAdapter(ambientes, context)
+            }
+
+        })
+
+        view.lista_ambientes_listview.onItemClickListener = AdapterView.OnItemClickListener{adapterView, view, i, l ->
+            val key: String = ambientes.get(i).id
+            activity!!.supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_content, DetalhesAmbiente.newInstance(key), "DetalhesAmbiente")
+                    .commit()
+        }
 
         return view
     }

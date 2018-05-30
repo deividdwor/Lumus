@@ -25,9 +25,8 @@
         </activity>
         <activity
         android:name=".ui.activity.MenuActivity"
-        android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
-        <activity android:name=".ui.activity.NovoAmbienteActivity" >
+        android:theme="@style/AppTheme.NoActionBar"
+        android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
 
     </application>

@@ -13,62 +13,62 @@
 
 
         <Spinner
-            android:id="@+id/nomeAmbienteSpinner"
+            android:id="@+id/nomeDispositivoSpinner"
 
             style="@android:style/Widget.Holo.Light.Spinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@id/corAmbiente"
+            app:layout_constraintBottom_toTopOf="@id/corDispositivo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
-            android:id="@+id/corAmbiente"
+            android:id="@+id/corDispositivo"
             style="@android:style/Widget.Holo.Light.Spinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@id/item_ambiente"
-            app:layout_constraintEnd_toStartOf="@id/iconeAmbiente"
+            app:layout_constraintBottom_toTopOf="@id/item_dispositivo"
+            app:layout_constraintEnd_toStartOf="@id/iconeDispositivo"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nomeAmbienteSpinner" />
+            app:layout_constraintTop_toBottomOf="@+id/nomeDispositivoSpinner" />
 
         <Spinner
-            android:id="@+id/iconeAmbiente"
+            android:id="@+id/iconeDispositivo"
             style="@android:style/Widget.Holo.Light.Spinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@id/item_ambiente"
+            app:layout_constraintBottom_toTopOf="@id/item_dispositivo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/corAmbiente"
-            app:layout_constraintTop_toBottomOf="@+id/nomeAmbienteSpinner" />
+            app:layout_constraintStart_toEndOf="@id/corDispositivo"
+            app:layout_constraintTop_toBottomOf="@+id/nomeDispositivoSpinner" />
 
         <include
-            android:id="@+id/item_ambiente"
-            layout="@layout/item_ambiente"
+            android:id="@+id/item_dispositivo"
+            layout="@layout/item_dispositivo"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            app:layout_constraintBottom_toTopOf="@id/btnSalvaAmbiente"
+            app:layout_constraintBottom_toTopOf="@id/btnSalvaDispositivo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/corAmbiente" />
+            app:layout_constraintTop_toBottomOf="@id/corDispositivo" />
 
         <Button
-            android:id="@+id/btnSalvaAmbiente"
+            android:id="@+id/btnSalvaDispositivo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Salvar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_ambiente" />
+            app:layout_constraintTop_toBottomOf="@id/item_dispositivo" />
 
 
     </android.support.constraint.ConstraintLayout>

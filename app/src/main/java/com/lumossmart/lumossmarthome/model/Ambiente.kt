@@ -1,9 +1,14 @@
 package com.lumossmart.lumossmarthome.model
 
-import java.io.Serializable
+import com.google.firebase.database.Exclude
+import com.google.firebase.database.IgnoreExtraProperties
 
-class Ambiente (val cor: String,
-                val nome: String,
-                val icone: String) : Serializable{
+@IgnoreExtraProperties
+class Ambiente (val cor: String = "",
+                val nome: String = "",
+                val icone: String = "",
+                @get:Exclude var id: String = ""
+                ){
+
 
 }

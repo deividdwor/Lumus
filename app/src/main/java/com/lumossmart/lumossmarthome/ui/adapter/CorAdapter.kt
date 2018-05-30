@@ -8,11 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.lumossmart.lumossmarthome.R
+import com.lumossmart.lumossmarthome.getDrawableByName
 import com.lumossmart.lumossmarthome.model.CorEnum
 import kotlinx.android.synthetic.main.item_icone.view.*
 
-class ItemSpinnerAdapter (private val cores: Array<CorEnum>,
-                          private val contexto: Context?) : BaseAdapter(){
+class CorAdapter (private val cores: Array<CorEnum>,
+                  private val contexto: Context?) : BaseAdapter(){
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -21,10 +22,7 @@ class ItemSpinnerAdapter (private val cores: Array<CorEnum>,
 
         val cor = cores[position]
 
-        var resources = contexto!!.resources
-        val idCor = resources.getIdentifier(cor.cor, "drawable", contexto!!.packageName)
-        var drawable = resources.getDrawable(idCor, null)
-        viewCriada.fundo.setImageDrawable(drawable)
+        viewCriada.fundo.setImageDrawable(contexto!!.getDrawableByName(cor.cor))
 
         return viewCriada
     }
