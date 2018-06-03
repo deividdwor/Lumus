@@ -8,6 +8,7 @@ class Dispositivo (val cor: String = "",
                    val nome: String = "",
                    val icone: String = "",
                    val ambienteKey: String = "",
+                   val ligado: Boolean = false,
                    @get:Exclude var id: String = ""
                 ){
 

@@ -21,6 +21,7 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.database.FirebaseDatabase
+import com.lumossmart.lumossmarthome.model.Ambiente
 import kotlinx.android.synthetic.main.fragment_lista_ambientes.*
 
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -35,10 +36,10 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fab.setOnClickListener { view ->
             val fragment = this.supportFragmentManager.findFragmentByTag("DetalhesAmbiente")
             if(fragment != null){
-                val key = fragment.arguments!!.getString("key")
+                val ambiente = fragment.arguments!!.get("ambiente") as Ambiente
                 supportFragmentManager
                         .beginTransaction()
-                        .replace(R.id.fragment_content, NovoDispositivo.newInstance(key), "NovoDispositivo")
+                        .replace(R.id.fragment_content, NovoDispositivo.newInstance(ambiente), "NovoDispositivo")
                         .commit()
             }else{
                 supportFragmentManager
@@ -58,10 +59,10 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val fragment = this.supportFragmentManager.findFragmentByTag("NovoDispositivo")
         if(fragment != null){
-            val key = fragment.arguments!!.getString("key")
+            val ambiente = fragment.arguments!!.get("ambiente") as Ambiente
             supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.fragment_content, NovoDispositivo.newInstance(key), "DetalhesAmbiente")
+                    .replace(R.id.fragment_content, NovoDispositivo.newInstance(ambiente), "DetalhesAmbiente")
                     .commit()
         }else{
             supportFragmentManager
@@ -161,7 +162,8 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val mDatabase = FirebaseDatabase.getInstance().getReference("casa/ambiente")
         val fragment = this.supportFragmentManager.findFragmentByTag("DetalhesAmbiente")
         if(fragment != null){
-            val ambiente = mDatabase.child(fragment.arguments!!.getString("key"))
+            val amb = fragment.arguments!!.get("ambiente") as Ambiente
+            val ambiente = mDatabase.child(amb.id)
             ambiente.removeValue()
 
             supportFragmentManager

@@ -21,9 +21,9 @@ import kotlinx.android.synthetic.main.item_dispositivo.view.*
 class NovoDispositivo : Fragment() {
 
     companion object {
-        fun newInstance(keyAmbiente: String):NovoDispositivo {
+        fun newInstance(ambiente: Ambiente):NovoDispositivo {
             val args = Bundle()
-            args.putString("keyAmbiente", keyAmbiente)
+            args.putSerializable("ambiente", ambiente)
             var novoDispositivo = NovoDispositivo()
             novoDispositivo.arguments = args
             return novoDispositivo
@@ -93,15 +93,16 @@ class NovoDispositivo : Fragment() {
             val cor = inflate.corDispositivo.selectedItem as CorEnum
             val nome = inflate.nomeDispositivoSpinner.selectedItem as String
             val icone = inflate.iconeDispositivo.selectedItem as IconeDispositivoEnum
-            val keyAmbiente = arguments!!.getString("keyAmbiente")
-            val dispositivo = Dispositivo(cor.cor, nome, icone.icone, keyAmbiente)
+            val ligado = inflate.onOff.isChecked
+            val ambiente = arguments!!.get("ambiente") as Ambiente
+            val dispositivo = Dispositivo(cor.cor, nome, icone.icone, ambiente.id, ligado)
 
             // pushing user to 'users' node using the userId
             mDatabase.child(dispositivoId).setValue(dispositivo)
 
             activity!!.supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.fragment_content, DetalhesAmbiente.newInstance( keyAmbiente), "DetalhesAmbiente")
+                    .replace(R.id.fragment_content, DetalhesAmbiente.newInstance( ambiente), "DetalhesAmbiente")
                     .commit()
         }
         return inflate

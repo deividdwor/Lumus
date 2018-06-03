@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import com.google.firebase.database.FirebaseDatabase
 import com.lumossmart.lumossmarthome.R
 import com.lumossmart.lumossmarthome.getDrawableByName
 import com.lumossmart.lumossmarthome.model.Dispositivo
@@ -27,6 +28,12 @@ class ListaDispositivosAdapter(private val dispositivos: List<Dispositivo>,
 
         viewCriada.item_dispositivo_icone.setImageDrawable(contexto!!.getDrawableByName(dispositivo.icone))
 
+        viewCriada.onOff.isChecked = dispositivo.ligado
+
+        viewCriada.onOff.setOnCheckedChangeListener { buttonView, isChecked ->
+            val mDatabaseDevices = FirebaseDatabase.getInstance().getReference("casa/dispositivos")
+            mDatabaseDevices.child(dispositivo.id).child("ligado").setValue(isChecked)
+        }
 
         return viewCriada
     }
