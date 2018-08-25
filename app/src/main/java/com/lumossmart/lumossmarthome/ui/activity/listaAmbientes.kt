@@ -31,7 +31,8 @@ companion object {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_lista_ambientes, container, false)
 
-        val mDatabase = FirebaseDatabase.getInstance().getReference("casa/ambiente")
+        val mDatabase = FirebaseDatabase
+                .getInstance().getReference("casa/ambiente")
 
         mDatabase.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {  }
@@ -45,7 +46,9 @@ companion object {
                         ambientes.add(ambiente!!)
                     }
                 }
-                view.lista_ambientes_listview?.adapter = ListaAmbientesAdapter(ambientes, context)
+                var listaAmbientesAdapter = ListaAmbientesAdapter(ambientes, context)
+
+                view.lista_ambientes_listview?.adapter = listaAmbientesAdapter
             }
 
         })

@@ -17,6 +17,10 @@ import com.lumossmart.lumossmarthome.getDrawableByName
 import com.lumossmart.lumossmarthome.model.Ambiente
 import com.lumossmart.lumossmarthome.model.Dispositivo
 import com.lumossmart.lumossmarthome.ui.adapter.ListaDispositivosAdapter
+import kotlinx.android.synthetic.main.activity_menu.*
+import kotlinx.android.synthetic.main.activity_menu.view.*
+import kotlinx.android.synthetic.main.app_bar_menu.*
+import kotlinx.android.synthetic.main.app_bar_menu.view.*
 import kotlinx.android.synthetic.main.fragment_detalhes_ambiente.view.*
 import kotlinx.android.synthetic.main.item_dispositivo.view.*
 
@@ -72,7 +76,8 @@ class DetalhesAmbiente() : Fragment() {
         })
 
         registerForContextMenu(inflate.dispositivosListView)
-
+        val toolbar = activity!!.toolbar
+        toolbar.background = context!!.getDrawableByName(amb.cor)
         return inflate
     }
 

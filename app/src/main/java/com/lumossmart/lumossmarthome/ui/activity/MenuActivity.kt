@@ -21,7 +21,10 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.database.FirebaseDatabase
+import com.lumossmart.lumossmarthome.getDrawableByName
 import com.lumossmart.lumossmarthome.model.Ambiente
+import kotlinx.android.synthetic.main.activity_menu.view.*
+import kotlinx.android.synthetic.main.app_bar_menu.view.*
 import kotlinx.android.synthetic.main.fragment_lista_ambientes.*
 
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -49,6 +52,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
         }
+
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -171,7 +175,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .replace(R.id.fragment_content, listaAmbientes.newInstance(), "listaAmbientes")
                     .commit()
         }
-
         return true
     }
 }

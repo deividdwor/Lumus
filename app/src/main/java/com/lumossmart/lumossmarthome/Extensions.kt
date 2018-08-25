@@ -9,6 +9,8 @@ import android.support.annotation.RequiresApi
 fun Context.getDrawableByName(name: String): Drawable{
 
     var resources = this.resources
-    val idIcone = resources.getIdentifier(name, "drawable", this.packageName)
+    val idIcone = resources.getIdentifier(name,
+            "drawable",
+            this.packageName)
     return resources.getDrawable(idIcone, null)
 }
