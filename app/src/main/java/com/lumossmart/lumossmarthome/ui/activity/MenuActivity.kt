@@ -135,18 +135,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .replace(R.id.fragment_content, listaAmbientes.newInstance(), "listaAmbientes")
                         .commit()
             }
-            R.id.nav_gallery -> {
-
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_manage -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
             R.id.logout -> {
                 val mAuth = FirebaseAuth.getInstance()
                 mAuth.signOut()
