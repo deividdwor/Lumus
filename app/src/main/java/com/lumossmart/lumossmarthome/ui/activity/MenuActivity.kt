@@ -1,7 +1,10 @@
 package com.lumossmart.lumossmarthome.ui.activity
 
+import android.app.Fragment
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -30,6 +33,7 @@ import kotlinx.android.synthetic.main.fragment_lista_ambientes.*
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     lateinit var mGoogleApiClient: GoogleApiClient
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -37,18 +41,25 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            val fragment = this.supportFragmentManager.findFragmentByTag("DetalhesAmbiente")
+            val fragment = this.getVisibleFragment()
             if(fragment != null){
-                val ambiente = fragment.arguments!!.get("ambiente") as Ambiente
-                supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment_content, NovoDispositivo.newInstance(ambiente), "NovoDispositivo")
-                        .commit()
-            }else{
-                supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment_content, NovoAmbiente.newInstance(), "NovoAmbientes")
-                        .commit()
+                if(fragment.tag.equals("listaProgramar")){
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment_content, NovoProgramar.newInstance(), "NovoProgramar")
+                            .commit()
+                }else if(fragment.tag.equals("DetalhesAmbiente")){
+                    val ambiente = fragment.arguments!!.get("ambiente") as Ambiente
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment_content, NovoDispositivo.newInstance(ambiente), "NovoDispositivo")
+                            .commit()
+                }else if(fragment.tag.equals("listaAmbientes")){
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment_content, NovoAmbiente.newInstance(), "NovoAmbientes")
+                            .commit()
+                }
             }
 
         }
@@ -135,6 +146,12 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .replace(R.id.fragment_content, listaAmbientes.newInstance(), "listaAmbientes")
                         .commit()
             }
+            R.id.programar -> {
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_content, ListaProgramar.newInstance(), "listaProgramar")
+                        .commit()
+            }
             R.id.logout -> {
                 val mAuth = FirebaseAuth.getInstance()
                 mAuth.signOut()
@@ -164,5 +181,17 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .commit()
         }
         return true
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getVisibleFragment(): android.support.v4.app.Fragment? {
+        val fragments = this.supportFragmentManager.fragments
+        if (fragments != null) {
+            for (fragment in fragments!!) {
+                if (fragment != null && fragment!!.isVisible())
+                    return fragment
+            }
+        }
+        return null
     }
 }
