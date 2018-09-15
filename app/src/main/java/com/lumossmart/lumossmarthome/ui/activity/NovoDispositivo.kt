@@ -16,6 +16,7 @@ import com.lumossmart.lumossmarthome.getDrawableByName
 import com.lumossmart.lumossmarthome.model.*
 import com.lumossmart.lumossmarthome.ui.adapter.*
 import kotlinx.android.synthetic.main.fragment_novo_dispositivo.view.*
+import kotlinx.android.synthetic.main.fragment_novo_programar.view.*
 import kotlinx.android.synthetic.main.item_dispositivo.view.*
 
 class NovoDispositivo : Fragment() {
@@ -105,6 +106,8 @@ class NovoDispositivo : Fragment() {
                     .replace(R.id.fragment_content, DetalhesAmbiente.newInstance( ambiente), "DetalhesAmbiente")
                     .commit()
         }
+
+
         return inflate
     }
 

@@ -70,7 +70,9 @@ class DetalhesAmbiente() : Fragment() {
 
                     }
                 }
-                inflate.dispositivosListView?.adapter = ListaDispositivosAdapter(dispositivos, context)
+                val d = Dispositivo()
+                dispositivos.add(d)
+                inflate.dispositivosListView?.adapter = ListaDispositivosAdapter(dispositivos, context, true)
             }
 
         })

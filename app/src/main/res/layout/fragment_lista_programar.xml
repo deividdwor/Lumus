@@ -13,13 +13,14 @@
         android:layout_height="match_parent">
 
         <ListView
+            android:id="@+id/listaProgramar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:listitem="@layout/item_programar"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_programar" />
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>
