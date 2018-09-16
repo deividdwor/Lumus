@@ -1,92 +1,60 @@
 package com.lumossmart.lumossmarthome.ui.activity
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.lumossmart.lumossmarthome.R
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.lumossmart.lumossmarthome.model.Momento
+import com.lumossmart.lumossmarthome.ui.adapter.ListaMomentoAdapter
+import kotlinx.android.synthetic.main.fragment_lista_momentos.view.*
 
 class ListaMomentos : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private lateinit var dispositivos: MutableList<Momento>
+
+    companion object {
+        fun newInstance(): ListaMomentos {
+            return ListaMomentos()
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_lista_momentos, container, false)
-    }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
+        val inflate = inflater.inflate(R.layout.fragment_lista_momentos, container, false)
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
+        val mDatabase = FirebaseDatabase.getInstance().getReference("casa/momentos")
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
+        mDatabase.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {  }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ListaMomentos.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                ListaMomentos().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
+            override fun onDataChange(p0: DataSnapshot?) {
+                dispositivos = mutableListOf()
+                if(p0!!.exists()){
+                    for(a in p0.children){
+                        var momento = a.getValue(Momento::class.java)
+                        momento!!.id = a.key
+                        dispositivos.add(momento!!)
                     }
                 }
+                val p = Momento()
+                dispositivos.add(p)
+                var listaMomentoAdapter = ListaMomentoAdapter(dispositivos, context)
+
+                inflate.listaMomentos.adapter = listaMomentoAdapter
+            }
+
+        })
+
+        return inflate
     }
+
+
 }

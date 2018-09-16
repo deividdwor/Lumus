@@ -9,7 +9,7 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Ambientes" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/momentos"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Momentos" />
         <item

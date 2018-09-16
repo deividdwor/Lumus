@@ -43,6 +43,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fab.setOnClickListener { view ->
             val fragment = this.getVisibleFragment()
             if(fragment != null){
+
                 if(fragment.tag.equals("listaProgramar")){
                     supportFragmentManager
                             .beginTransaction()
@@ -58,6 +59,11 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     supportFragmentManager
                             .beginTransaction()
                             .replace(R.id.fragment_content, NovoAmbiente.newInstance(), "NovoAmbientes")
+                            .commit()
+                }else if(fragment.tag.equals("listaMomentos")){
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment_content, NovoMomento.newInstance(), "NovoMomento")
                             .commit()
                 }
             }
@@ -150,6 +156,12 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 supportFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment_content, ListaProgramar.newInstance(), "listaProgramar")
+                        .commit()
+            }
+            R.id.momentos -> {
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_content, ListaMomentos.newInstance(), "listaMomentos")
                         .commit()
             }
             R.id.logout -> {

@@ -50,7 +50,6 @@ class DetalhesAmbiente() : Fragment() {
         inflate.nomeAmbiente.text = amb.nome
         inflate.corAmbiente.setImageDrawable(context!!.getDrawableByName(amb.cor))
         inflate.fundoIcone.setImageDrawable(context!!.getDrawableByName(amb.cor))
-        inflate.corFundoLapis.setImageDrawable(context!!.getDrawableByName(amb.cor))
         inflate.iconeAmbiente.setImageDrawable(context!!.getDrawableByName(amb.icone))
 
         val mDatabaseDevices = FirebaseDatabase.getInstance().getReference("casa/dispositivos")

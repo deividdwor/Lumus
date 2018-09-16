@@ -31,9 +31,9 @@ class NovoProgramar : Fragment() {
 
 
     private lateinit var ambientes: MutableList<Ambiente>
+    private lateinit var dispositivos: MutableList<Dispositivo>
     private var programar = Programar()
     private  var ambiente: Ambiente? = null
-    private lateinit var dispositivos: MutableList<Dispositivo>
 
     companion object {
         fun newInstance():NovoProgramar {

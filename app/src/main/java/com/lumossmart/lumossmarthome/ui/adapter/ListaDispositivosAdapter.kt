@@ -1,6 +1,7 @@
 package com.lumossmart.lumossmarthome.ui.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.view.LayoutInflater
@@ -13,9 +14,11 @@ import com.lumossmart.lumossmarthome.getDrawableByName
 import com.lumossmart.lumossmarthome.model.Dispositivo
 import kotlinx.android.synthetic.main.item_dispositivo.view.*
 
+
 class ListaDispositivosAdapter(private val dispositivos: List<Dispositivo>,
                                private val contexto: Context?,
-                               private val btnEnable: Boolean) : BaseAdapter(){
+                               private val btnEnable: Boolean,
+                               private val btnAdd : Boolean = false) : BaseAdapter(){
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
@@ -23,10 +26,29 @@ class ListaDispositivosAdapter(private val dispositivos: List<Dispositivo>,
 
         val dispositivo = dispositivos[position]
 
+
+        if(btnAdd){
+
+            viewCriada.item_dispositivo_nome.visibility = View.INVISIBLE
+
+            viewCriada.item_dispositivo_cor.visibility = View.INVISIBLE
+
+            viewCriada.item_dispositivo_icone.visibility = View.INVISIBLE
+
+            viewCriada.onOff.visibility = View.INVISIBLE
+
+            viewCriada.card.setCardBackgroundColor(Color.WHITE)
+
+            viewCriada.btnAdd.visibility = View.VISIBLE
+
+            return viewCriada
+        }
+
         if(dispositivo.nome == ""){
             viewCriada.card.visibility = View.INVISIBLE
             return viewCriada
         }
+
         viewCriada.item_dispositivo_nome.text = dispositivo.nome
 
         viewCriada.item_dispositivo_cor.setImageDrawable(contexto!!.getDrawableByName(dispositivo.cor))
