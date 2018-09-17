@@ -71,7 +71,7 @@ class DetalhesAmbiente() : Fragment() {
                 }
                 val d = Dispositivo()
                 dispositivos.add(d)
-                inflate.dispositivosListView?.adapter = ListaDispositivosAdapter(dispositivos, context, true)
+                inflate.dispositivosListView?.adapter = ListaDispositivosAdapter(dispositivos, context)
             }
 
         })

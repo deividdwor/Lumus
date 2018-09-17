@@ -7,8 +7,7 @@ import com.google.firebase.database.IgnoreExtraProperties
 class Momento (var nome: String = "",
                var icone: String = "",
                var cor: String = "",
-               var ligado: Boolean = false,
-               var dispositivos: MutableList<String> = mutableListOf(),
+               var dispositivos: MutableList<DispositivoSimples> = mutableListOf(),
                @get:Exclude var id: String = ""
                 ){
 

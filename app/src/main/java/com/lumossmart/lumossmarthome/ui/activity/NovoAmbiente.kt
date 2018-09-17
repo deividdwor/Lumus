@@ -37,9 +37,12 @@ class NovoAmbiente : Fragment(){
         val icones = IconeAmbienteEnum.values()
         val nomes = nomeAmbienteEnum.values()
 
+        val nomesString = nomes.map { it.nome }.toList()
+
         inflate.corAmbiente.adapter = CorAdapter(cores,  context)
-        inflate.iconeAmbiente.adapter = IconeAmbienteAdapter(icones, context!!.getDrawableByName("@android:color/holo_green_dark"), context)
-        inflate.nomeAmbienteSpinner.adapter = NomeAmbienteAdapter(nomes, context)
+        inflate.iconeAmbiente.adapter = IconeAmbienteAdapter(icones, context!!.getDrawableByName("@color/amarelo"), context)
+        inflate.nomeAmbienteSpinner.adapter = NomeAmbienteAdapter(nomesString, context)
+
         var idCurrentIcone = 0
 
         inflate.nomeAmbienteSpinner.onItemSelectedListener =  object : AdapterView.OnItemSelectedListener{

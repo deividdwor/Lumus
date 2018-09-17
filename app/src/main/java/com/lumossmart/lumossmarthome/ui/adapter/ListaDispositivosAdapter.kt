@@ -17,7 +17,8 @@ import kotlinx.android.synthetic.main.item_dispositivo.view.*
 
 class ListaDispositivosAdapter(private val dispositivos: List<Dispositivo>,
                                private val contexto: Context?,
-                               private val btnEnable: Boolean,
+                               private val btnEnable: Boolean = true,
+                               private val btnVisible: Boolean = true,
                                private val btnAdd : Boolean = false) : BaseAdapter(){
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -62,8 +63,12 @@ class ListaDispositivosAdapter(private val dispositivos: List<Dispositivo>,
             val mDatabaseDevices = FirebaseDatabase.getInstance().getReference("casa/dispositivos")
             mDatabaseDevices.child(dispositivo.id).child("ligado").setValue(isChecked)
         }
-        if(!btnEnable) {
+        if(!btnVisible) {
             viewCriada.onOff.visibility = View.INVISIBLE
+        }
+
+        if(!btnEnable){
+            viewCriada.onOff.isEnabled = false
         }
 
         return viewCriada

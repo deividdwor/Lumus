@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Spinner
 import com.lumossmart.lumossmarthome.R
 import com.lumossmart.lumossmarthome.getDrawableByName
 import com.lumossmart.lumossmarthome.model.CorEnum

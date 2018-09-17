@@ -13,6 +13,10 @@ import com.lumossmart.lumossmarthome.R
 import com.lumossmart.lumossmarthome.model.Momento
 import com.lumossmart.lumossmarthome.ui.adapter.ListaMomentoAdapter
 import kotlinx.android.synthetic.main.fragment_lista_momentos.view.*
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
+
+
 
 class ListaMomentos : Fragment() {
 
@@ -48,11 +52,13 @@ class ListaMomentos : Fragment() {
                 dispositivos.add(p)
                 var listaMomentoAdapter = ListaMomentoAdapter(dispositivos, context)
 
-                inflate.listaMomentos.adapter = listaMomentoAdapter
+                inflate.lista.adapter =listaMomentoAdapter
             }
 
         })
 
+        val mLayoutManager = GridLayoutManager(context, 2)
+        inflate.lista.setLayoutManager(mLayoutManager)
         return inflate
     }
 

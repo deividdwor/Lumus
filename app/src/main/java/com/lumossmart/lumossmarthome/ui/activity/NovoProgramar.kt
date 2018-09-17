@@ -137,7 +137,7 @@ class NovoProgramar : Fragment() {
 
                             }
                         }
-                        inflate.programarDispositivosSpinner?.adapter = ListaDispositivosAdapter(dispositivos, context, false)
+                        inflate.programarDispositivosSpinner?.adapter = ListaDispositivosAdapter(dispositivos, context, false, false)
                     }
 
                 })

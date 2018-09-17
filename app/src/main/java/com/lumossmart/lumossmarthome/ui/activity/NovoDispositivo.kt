@@ -16,7 +16,6 @@ import com.lumossmart.lumossmarthome.getDrawableByName
 import com.lumossmart.lumossmarthome.model.*
 import com.lumossmart.lumossmarthome.ui.adapter.*
 import kotlinx.android.synthetic.main.fragment_novo_dispositivo.view.*
-import kotlinx.android.synthetic.main.fragment_novo_programar.view.*
 import kotlinx.android.synthetic.main.item_dispositivo.view.*
 
 class NovoDispositivo : Fragment() {
@@ -40,7 +39,7 @@ class NovoDispositivo : Fragment() {
         val icones = IconeDispositivoEnum.values()
         val nomes = nomeDispositivoEnum.values()
 
-        inflate.corDispositivo.adapter = CorAdapter(cores,  context)
+        inflate.corDispositivo.adapter = CorAdapter(cores, context)
         inflate.iconeDispositivo.adapter = IconeDispositivoAdapter(icones, context!!.getDrawableByName("@android:color/holo_green_dark"), context)
         inflate.nomeDispositivoSpinner.adapter = NomeDispositivoAdapter(nomes, context)
 

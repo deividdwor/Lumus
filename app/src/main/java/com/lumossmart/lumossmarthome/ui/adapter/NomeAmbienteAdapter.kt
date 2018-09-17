@@ -11,7 +11,7 @@ import com.lumossmart.lumossmarthome.R
 import com.lumossmart.lumossmarthome.model.nomeAmbienteEnum
 import kotlinx.android.synthetic.main.item_nome.view.*
 
-class NomeAmbienteAdapter (private val nomes: Array<nomeAmbienteEnum>,
+class NomeAmbienteAdapter (private val nomes: List<String>,
                            private val contexto: Context?) : BaseAdapter(){
 
 
@@ -21,13 +21,13 @@ class NomeAmbienteAdapter (private val nomes: Array<nomeAmbienteEnum>,
 
         val nome = nomes[position]
 
-        viewCriada.item_nome.text = nome.nome
+        viewCriada.item_nome.text = nome
 
         return viewCriada
     }
 
     override fun getItem(position: Int): String {
-        return nomes[position].nome
+        return nomes[position]
     }
 
     override fun getItemId(position: Int): Long {
