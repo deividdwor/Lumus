@@ -164,6 +164,12 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .replace(R.id.fragment_content, ListaMomentos.newInstance(), "listaMomentos")
                         .commit()
             }
+            R.id.configuracao -> {
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_content, Configuracao.newInstance(), "Configuracao")
+                        .commit()
+            }
             R.id.logout -> {
                 val mAuth = FirebaseAuth.getInstance()
                 mAuth.signOut()

@@ -16,7 +16,9 @@ import com.google.firebase.auth.FirebaseUser
 import android.content.Intent
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.FirebaseDatabase
 import com.lumossmart.lumossmarthome.R
+import com.lumossmart.lumossmarthome.model.Usuario
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
@@ -106,6 +108,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient
                         intent.putExtra("nome", acct.displayName)
                         intent.putExtra("email", acct.email)
                         intent.putExtra("foto", acct.photoUrl.toString())
+
+                        var uid = user!!.uid
+                        val mDatabase = FirebaseDatabase.getInstance().getReference("casa/usuarios")
+                        val id = mDatabase.push().key
+
+                        var usuario = Usuario(uid)
+                        mDatabase.child(id).setValue(usuario)
 
                         startActivity(intent)
                         updateUI(user)
