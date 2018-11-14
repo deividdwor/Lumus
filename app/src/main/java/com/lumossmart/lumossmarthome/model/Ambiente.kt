@@ -8,5 +8,6 @@ import java.io.Serializable
 class Ambiente (val cor: String = "",
                 val nome: String = "",
                 val icone: String = "",
-                @get:Exclude var id: String = ""
+                @get:Exclude var id: String = "",
+                @get:Exclude var dispositivos: MutableList<Dispositivo> = mutableListOf()
                 ):Serializable

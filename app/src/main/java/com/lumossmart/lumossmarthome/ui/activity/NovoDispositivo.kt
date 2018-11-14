@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -50,11 +51,13 @@ class NovoDispositivo : Fragment() {
         }
     }
 
+    private  var usuarios = mutableListOf<Usuario>()
 
     @TargetApi(Build.VERSION_CODES.N)
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
 
         val policy : StrictMode.ThreadPolicy  =  StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
@@ -74,6 +77,25 @@ class NovoDispositivo : Fragment() {
             }
 
         })
+
+        val mDatabaseUser = FirebaseDatabase.getInstance().getReference("casa/usuarios")
+
+        mDatabaseUser.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {  }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                usuarios.clear()
+                if(p0!!.exists()){
+                    for(a in p0.children){
+                        var usuario = a.getValue(Usuario::class.java)
+                        usuarios.add(usuario!!)
+
+                    }
+                }
+            }
+
+        })
+
 
         val inflate = inflater.inflate(R.layout.fragment_novo_dispositivo, container, false)
 
@@ -128,6 +150,8 @@ class NovoDispositivo : Fragment() {
 
             inflate.btnSalvaDispositivo.setOnClickListener { view ->
                 val mDatabase = FirebaseDatabase.getInstance().getReference("casa/dispositivos")
+                var mAuth = FirebaseAuth.getInstance()
+                val user = mAuth!!.currentUser
                 // Creating new user node, which returns the unique key value
                 // new user node would be /users/$userid/
                 val dispositivoId = mDatabase.push().key
@@ -137,14 +161,24 @@ class NovoDispositivo : Fragment() {
                 val icone = inflate.iconeDispositivo.selectedItem as IconeDispositivoEnum
                 val ligado = inflate.onOff.isChecked
                 val ambiente = arguments!!.get("ambiente") as Ambiente
-                val dispositivo = Dispositivo(cor.cor, nome, icone.icone, ambiente.id, ligado)
+                val dispositivo = Dispositivo(cor.cor, nome, icone.icone, ambiente.id, ligado, user!!.uid)
 
                 // pushing user to 'users' node using the userId
-                if(configuraDispositivo(dispositivoId) == 200){
-                    mDatabase.child(dispositivoId).setValue(dispositivo)
-                }else{
-
+                //if(configuraDispositivo(dispositivoId) == 200){
+                for(u in usuarios){
+                    var permitido = false
+                    if(u.uid == dispositivo.usuarioInc){
+                        permitido = true
+                    }
+                    val mDatabase = FirebaseDatabase.getInstance().getReference("casa/usuarios")
+                    mDatabase.child(u.uid).child("permissoes").child(dispositivoId).setValue(permitido)
                 }
+
+                    mDatabase.child(dispositivoId).setValue(dispositivo)
+
+              //  }else{
+
+                //}
 
                 activity!!.supportFragmentManager
                         .beginTransaction()
@@ -154,7 +188,6 @@ class NovoDispositivo : Fragment() {
 
         return inflate
     }
-
 
     private fun checkPermission(permission: String): Boolean {
         val checkPermission = ContextCompat.checkSelfPermission(context!!, permission)

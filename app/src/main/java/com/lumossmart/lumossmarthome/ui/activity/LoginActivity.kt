@@ -16,14 +16,17 @@ import com.google.firebase.auth.FirebaseUser
 import android.content.Intent
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.lumossmart.lumossmarthome.R
-import com.lumossmart.lumossmarthome.model.Usuario
+import com.lumossmart.lumossmarthome.model.*
+
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
     private val TAG = "JSAGoogleSignIn"
     private val REQUEST_CODE_SIGN_IN = 1234
+    private lateinit var dispositivos: MutableList<Dispositivo>
+    private  var usuarios = mutableListOf<Usuario>()
 
     private var mAuth: FirebaseAuth? = null
 
@@ -47,6 +50,78 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient
 
         mAuth = FirebaseAuth.getInstance()
 
+
+        val mDatabaseUser = FirebaseDatabase.getInstance().getReference("casa/usuarios")
+
+        mDatabaseUser.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {  }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                usuarios.clear()
+                if(p0!!.exists()){
+                    for(a in p0.children){
+                        var usuario = a.getValue(Usuario::class.java)
+                        usuarios.add(usuario!!)
+
+                    }
+                }
+            }
+
+        })
+
+
+        val mDatabaseDisp = FirebaseDatabase.getInstance().getReference("casa/dispositivos")
+
+        mDatabaseUser.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {  }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                dispositivos = mutableListOf()
+                if(p0!!.exists()){
+                    for(a in p0.children){
+                        var dispositivo = a.getValue(Dispositivo::class.java)
+                        dispositivo!!.id = a.key
+                        dispositivos.add(dispositivo!!)
+
+                    }
+                }
+            }
+
+        })
+
+
+       /* val mDatabaseDevices = FirebaseDatabase.getInstance().getReference("casa/dispositivos")
+
+        val childEventListener = object : ChildEventListener {
+            override fun onChildRemoved(p0: DataSnapshot?) {
+            }
+
+            override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
+            }
+
+            override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
+
+            }
+
+            override fun onChildAdded(dataSnapshot: DataSnapshot, p1: String?) {
+                    var dispositivo = dataSnapshot.getValue(Dispositivo::class.java)
+                    dispositivo!!.id = dataSnapshot.key
+
+                    for(u in usuarios){
+                        var permitido = false
+                        if(u.uid == dispositivo.usuarioInc){
+                           permitido = true
+                        }
+                        val mDatabase = FirebaseDatabase.getInstance().getReference("casa/usuarios")
+                        mDatabase.child(u.uid).child("permissoes").child(dispositivo.id).setValue(permitido)
+                    }
+
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {  }
+
+        }
+        mDatabaseDevices!!.addChildEventListener(childEventListener)*/
 
     }
 
@@ -111,10 +186,18 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, GoogleApiClient
 
                         var uid = user!!.uid
                         val mDatabase = FirebaseDatabase.getInstance().getReference("casa/usuarios")
-                        val id = mDatabase.push().key
 
-                        var usuario = Usuario(uid)
-                        mDatabase.child(id).setValue(usuario)
+                        if(usuarios.filter { i -> i.uid == uid }.count() == 0){
+                            var usuario = Usuario(uid)
+                            mDatabase.child(uid).setValue(usuario)
+
+
+                            var permissoes = mutableListOf<Permissao>()
+                            for(d in dispositivos){
+                                mDatabase.child(uid).child("permissoes").child(d.id).setValue(false)
+                            }
+
+                        }
 
                         startActivity(intent)
                         updateUI(user)

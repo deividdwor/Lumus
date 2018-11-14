@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.*
 import android.widget.AdapterView
 import android.widget.CompoundButton
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -16,6 +17,7 @@ import com.lumossmart.lumossmarthome.R
 import com.lumossmart.lumossmarthome.getDrawableByName
 import com.lumossmart.lumossmarthome.model.Ambiente
 import com.lumossmart.lumossmarthome.model.Dispositivo
+import com.lumossmart.lumossmarthome.model.Usuario
 import com.lumossmart.lumossmarthome.ui.adapter.ListaDispositivosAdapter
 import kotlinx.android.synthetic.main.activity_menu.*
 import kotlinx.android.synthetic.main.activity_menu.view.*
@@ -39,9 +41,11 @@ class DetalhesAmbiente() : Fragment() {
             return detalhesAmbiente
         }
     }
+    var usuario : Usuario = Usuario()
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
 
         val amb: Ambiente = arguments!!.get("ambiente") as Ambiente
 
@@ -51,6 +55,26 @@ class DetalhesAmbiente() : Fragment() {
         inflate.corAmbiente.setImageDrawable(context!!.getDrawableByName(amb.cor))
         inflate.fundoIcone.setImageDrawable(context!!.getDrawableByName(amb.cor))
         inflate.iconeAmbiente.setImageDrawable(context!!.getDrawableByName(amb.icone))
+
+
+        val mDatabaseUser = FirebaseDatabase.getInstance().getReference("casa/usuarios")
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        mDatabaseUser.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {  }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                if(p0!!.exists()){
+                    for(a in p0.children){
+                        var u = a.getValue(Usuario::class.java)
+                        if(currentUser!!.uid == u!!.uid){
+                            usuario = u
+                        }
+                    }
+                }
+            }
+
+        })
 
         val mDatabaseDevices = FirebaseDatabase.getInstance().getReference("casa/dispositivos")
 
@@ -64,7 +88,10 @@ class DetalhesAmbiente() : Fragment() {
                         var dispositivo = a.getValue(Dispositivo::class.java)
                         dispositivo!!.id = a.key
                         if(dispositivo.ambienteKey == amb.id){
-                            dispositivos.add(dispositivo!!)
+                            var get = usuario.permissoes[dispositivo.id]
+                            if(usuario.admin || (get != null && get)){
+                                dispositivos.add(dispositivo!!)
+                            }
                         }
 
                     }
@@ -102,4 +129,10 @@ class DetalhesAmbiente() : Fragment() {
         }
         return true
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+
 }

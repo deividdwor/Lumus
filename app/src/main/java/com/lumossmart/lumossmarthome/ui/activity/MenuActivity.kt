@@ -170,6 +170,12 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .replace(R.id.fragment_content, Configuracao.newInstance(), "Configuracao")
                         .commit()
             }
+            R.id.permissoes -> {
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_content, PermissoesLista.newInstance(), "listaPermissao")
+                        .commit()
+            }
             R.id.logout -> {
                 val mAuth = FirebaseAuth.getInstance()
                 mAuth.signOut()
